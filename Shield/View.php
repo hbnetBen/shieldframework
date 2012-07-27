@@ -11,6 +11,56 @@ class View extends Base
     private $_values = array();
 
     /**
+     * View directory path
+     * @var string
+     */
+    private $_viewDir  = null;
+
+    /**
+     * Template object instance
+     * @var object
+     */
+    public $template = null;
+
+    /**
+     * Init the object and create a Template instance
+     * 
+     * @param object $di DI container
+     */
+    public function __construct($di)
+    {
+        $this->template = new Template($di);
+        $this->setViewDir();
+
+        parent::__construct($di);
+    }
+
+    /**
+     * Set the directory to look for views in
+     * 
+     * @param string $dir Direcotry path
+     */
+    public function setViewDir($dir=null)
+    {
+        // see if the path is valid
+        $viewPath = ($dir !== null) ? $dir : __DIR__.'/../app/views';
+
+        if (realpath($viewPath) !== false) {
+            $this->_viewDir = realpath($viewPath);
+        }
+    }
+
+    /**
+     * Get the current path for view files
+     * 
+     * @return string View path
+     */
+    public function getViewDir()
+    {
+        return $this->_viewDir;
+    }
+
+    /**
      * Set a new value into the view instance
      * 
      * @param string $index String to replace

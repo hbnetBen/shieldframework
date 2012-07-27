@@ -52,6 +52,11 @@ class Session extends Base
             array($this, "gc")
         );
 
+        $sessionKey = $di->get('Config')->get('session_key');
+        if ($sessionKey !== null) {
+            $this->_key = $sessionKey;
+        }
+
         parent::__construct($di);
         $this->setEncryptionKey($this->_di->config->get('session.encryption_key'));
         $this->setSignatureKey($this->_di->config->get('session.signature_key'));
@@ -81,7 +86,6 @@ class Session extends Base
     {
         $this->checkKeys();
         $path = $this->_savePathRoot.'/shield_'.$id;
-
         $ivSize = mcrypt_get_iv_size($this->_cipher, MCRYPT_MODE_CFB);
         $iv = mcrypt_create_iv($ivSize, MCRYPT_DEV_URANDOM);
 
