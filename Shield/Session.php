@@ -247,7 +247,7 @@ class Session extends Base
      */
     private function checkKeys() {
         $valid = true;
-        if (strlen($this->_encKey) !== mcrypt_get_key_size($this->_cipher)) {
+        if (strlen($this->_encKey) !== mcrypt_get_key_size($this->_cipher, MCRYPT_MODE_CFB)) {
             $valid = false;
         }
         if (strlen($this->_sigKey) < 64) {
